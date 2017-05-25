@@ -98,18 +98,18 @@ function adduserpref(req, res, next) {
 function addnewproduct(req, res, next) {
   console.log(req);
   console.log('req.body ===>', req.body)
-   db.none('insert into information ( userid ,barcode , product, eggs, fish , milk, peanuts, sesame, shellfish , soy , treenuts,wheat)' +
-      'values(${userid}, ${barcode},${product}, ${eggs} , ${fish} , ${milk},${peanuts},${sesame} ,${shellfish},${soy},${treenuts},${wheat}  )',
+   db.none('insert into products (barcode ,product)' +
+      'values(${barcode} , ${product} )',
       req.body)
     .then(function() {
       res.status(200)
         .json({
           status: 'success',
-          message: 'One product allergy check result was added'
+          message: 'One product was added'
         });
     })
     .catch(function(err) {
-      console.log(err);
+      console.log("This product already exist in the database");
       return next(err);
     });
 }
