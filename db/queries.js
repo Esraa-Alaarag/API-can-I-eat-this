@@ -39,7 +39,25 @@ function getuserpref(req, res, next) {
       return next(err);
     });
 }
-// this function add one tweed to the database using postman
+
+function allusers(req, res, next) {
+  // parse the requested url to get the required tweed id using pg-promise method one , then
+    db.many('select * from allergies')
+    .then(function(data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'all users preference was retrieved'
+        });
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+}
+
+
+
 
 /*
 http://localhost:3000/api/allergies
@@ -176,7 +194,8 @@ module.exports = {
   addnewproduct: addnewproduct,  //add
   addresult    : addresult,      //add
   history      : history,        //read
-  deleteproduct: deleteproduct   //DELETE
+  deleteproduct: deleteproduct,   //DELETE
+  allusers     : allusers,        //read
 };
 
 

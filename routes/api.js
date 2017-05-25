@@ -15,5 +15,6 @@ router.post('/information', db.addresult);
 router.put('/allergies/:userid', db.editpref);
 router.get('/information', db.history);
 router.delete('/products/:id', db.deleteproduct);
+router.get('/allergies', db.allusers);
 
 module.exports = router;
