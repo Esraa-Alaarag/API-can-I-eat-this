@@ -13,8 +13,7 @@ router.post('/allergies', db.adduserpref);
 router.post('/products', db.addnewproduct);
 router.post('/information', db.addresult);
 router.put('/allergies/:userid', db.editpref);
-
-//router.get('/api/:userid', db.getproduct);
-//router.delete('/api/:id', db.deleteproduct);
+router.get('/information', db.history);
+router.delete('/products/:id', db.deleteproduct);
 
 module.exports = router;

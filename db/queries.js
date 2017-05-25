@@ -6,22 +6,22 @@ let connString = process.env.DATABASE_URL
 let db = pgp(connString);
 
 // The axios get comes here
-// function getAlltweed(req, res, next) {
-//   // return all the records from the database using pg-promise method any , then
-//   db.any('SELECT * FROM tweedrfeed')
-//     .then(function(data) {
-//       console.log('DATA:', data);
-//       res.status(200)
-//         .json({
-//           status: 'success',
-//           data: data,
-//           message: 'All tweeds Retrieved '
-//         });
-//     })
-//     .catch(function(err) {
-//       return next(err);
-//     });
-// }
+function history(req, res, next) {
+  // return all the records from the database using pg-promise method any , then
+  db.any('SELECT information.id , products.product , information.result FROM information LEFT JOIN products ON products.barcode = information.barcode ;')
+    .then(function(data) {
+      console.log('DATA:', data);
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'All history were retrieved '
+        });
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+}
 // The axios get : id comes here
 function getuserpref(req, res, next) {
   // parse the requested url to get the required tweed id using pg-promise method one , then
@@ -77,22 +77,6 @@ function adduserpref(req, res, next) {
       return next(err);
     });
 }
-/*
-    id SERIAL PRIMARY KEY,
-    userid  int REFERENCES allergies(userid) NOT NULL,
-    barcode BIGINT REFERENCES products(barcode) NOT NULL,
-    eggs BOOLEAN NOT NULL,
-    fish BOOLEAN NOT NULL,
-    milk BOOLEAN NOT NULL,
-    peanuts BOOLEAN NOT NULL,
-    sesame BOOLEAN NOT NULL,
-    shellfish BOOLEAN NOT NULL,
-    soy BOOLEAN NOT NULL,
-    treenuts BOOLEAN NOT NULL,
-    wheat BOOLEAN NOT NULL,
-    result BOOLEAN NOT NULL
-*/
-
 
 
 function addnewproduct(req, res, next) {
@@ -135,10 +119,19 @@ function addresult(req, res, next) {
 
 // change the information inside the database
 /*
+http://localhost:3000/api/allergies/123456
  put
   {
-    "id" : 12,
-    "tweed": "I  can develop APIs",
+
+    "eggsallergy": false,
+    "fishallergy": true,
+    "milkallergy": true,
+    "peanutsallergy": true,
+    "sesameallergy": true,
+    "shellfishallergy": true,
+    "soyallergy": true,
+    "treenutsallergy": true,
+    "wheatallergy": true
   }
 */
 function editpref(req, res, next) {
@@ -158,38 +151,32 @@ function editpref(req, res, next) {
     });
 }
 // this function delete the tweeds which it's id was after url
-// function deletetweed(req, res, next) {
-//   let id = parseInt(req.params.id);
-//   db.result('delete from tweedrfeed where id = $1', id)
-//     .then(function(result) {
-//       res.status(200)
-//         .json({
-//           status: 'success',
-//           message: `Removed ${result.rowCount} tweed`
-//         });
-//     })
-//     .catch(function(err) {
-//       return next(err);
-//     });
-// }
+function deleteproduct(req, res, next) {
+  let id = parseInt(req.params.id);
+  db.result('delete from information where id = $1', id)
+    .then(function(result) {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: ` ${result.rowCount} product was removed`
+        });
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+}
 
 
-// router.get('/api/:userid', db.getuserpref);
-// router.post('/api/:userid', db.adduserpref);
-// router.put('/api/:userid', db.updateuserpref);
-// router.post('/api/:userid', db.addnewproduct);
-// router.get('/api/:userid', db.getproduct);
-// router.delete('/api/:id', db.deleteproduct);
 
 //CRUD
 module.exports = {
-  getuserpref  : getuserpref, //read
-  adduserpref  : adduserpref, //add
-  editpref     : editpref, //Edit
-  addnewproduct: addnewproduct,   //add
-  addresult    : addresult, 
-  //getproduct: getproduct,   //read
-  //deleteproduct: deleteproduct    //DELETE
+  getuserpref  : getuserpref,    //read
+  adduserpref  : adduserpref,    //add
+  editpref     : editpref,       //Edit
+  addnewproduct: addnewproduct,  //add
+  addresult    : addresult,      //add
+  history      : history,        //read
+  deleteproduct: deleteproduct   //DELETE
 };
 
 
