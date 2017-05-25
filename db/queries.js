@@ -97,6 +97,24 @@ function adduserpref(req, res, next) {
 }
 
 
+function addoredit(req, res, next) {
+  console.log(req);
+  db.none('update allergies set eggsallergy=$1, fishallergy=$2, milkallergy=$3, peanutsallergy=$4, sesameallergy=$5 ,shellfishallergy=$6 , soyallergy=$7,  treenutsallergy=$8 , wheatallergy=$9  where userid=$10', [req.body.eggsallergy, req.body.fishallergy, req.body.milkallergy, req.body.peanutsallergy, req.body.sesameallergy, req.body.shellfishallergy, req.body.soyallergy, req.body.treenutsallergy, req.body.wheatallergy , req.params.userid
+    ])
+    .then(function() {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: ' one user preference was Updated'
+        });
+    })
+    .catch(function(err) {
+      console.log(err)
+      return next(err);
+    });
+}
+
+
 function addnewproduct(req, res, next) {
   console.log(req);
   console.log('req.body ===>', req.body)
@@ -196,6 +214,7 @@ module.exports = {
   history      : history,        //read
   deleteproduct: deleteproduct,   //DELETE
   allusers     : allusers,        //read
+  addoredit    : addoredit,
 };
 
 
