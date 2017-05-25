@@ -23,22 +23,22 @@ let db = pgp(connString);
 //     });
 // }
 // The axios get : id comes here
-// function getOnetweed(req, res, next) {
-//   // parse the requested url to get the required tweed id using pg-promise method one , then
-//   let id = parseInt(req.params.id);
-//     db.one('select * from tweedrfeed where id = $1', id)
-//     .then(function(data) {
-//       res.status(200)
-//         .json({
-//           status: 'success',
-//           data: data,
-//           message: 'One tweed Retrieved'
-//         });
-//     })
-//     .catch(function(err) {
-//       return next(err);
-//     });
-// }
+function getuserpref(req, res, next) {
+  // parse the requested url to get the required tweed id using pg-promise method one , then
+  let userid = parseInt(req.params.userid);
+    db.one('select * from allergies where userid = $1', userid)
+    .then(function(data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'One user preference was retrieved'
+        });
+    })
+    .catch(function(err) {
+      return next(err);
+    });
+}
 // this function add one tweed to the database using postman
 
 /*
@@ -114,6 +114,25 @@ function addnewproduct(req, res, next) {
     });
 }
 
+function addresult(req, res, next) {
+  console.log(req);
+  console.log('req.body ===>', req.body)
+   db.none('insert into information (userid ,barcode, eggs , fish, milk, peanuts, sesame, shellfish , soy , treenuts, wheat ,result)' +
+      'values(${userid} ,${barcode}, ${eggs} , ${fish} , ${milk},${peanuts},${sesame} ,${shellfish},${soy},${treenuts},${wheat},${result}  )',
+      req.body)
+    .then(function() {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: 'One product comparison result was added'
+        });
+    })
+    .catch(function(err) {
+      console.log("You have error in adding comparison result");
+      return next(err);
+    });
+}
+
 // change the information inside the database
 /*
  put
@@ -122,21 +141,22 @@ function addnewproduct(req, res, next) {
     "tweed": "I  can develop APIs",
   }
 */
-// function updatetweed(req, res, next) {
-//   db.none('update tweedrfeed set tweed=$1 where id=$2', [req.body.tweed,parseInt(req.params.id)
-//     ])
-//     .then(function() {
-//       res.status(200)
-//         .json({
-//           status: 'success',
-//           message: ' one tweed was Updated'
-//         });
-//     })
-//     .catch(function(err) {
-//       console.log(err)
-//       return next(err);
-//     });
-// }
+function editpref(req, res, next) {
+  console.log(req);
+  db.none('update allergies set eggsallergy=$1, fishallergy=$2, milkallergy=$3, peanutsallergy=$4, sesameallergy=$5 ,shellfishallergy=$6 , soyallergy=$7,  treenutsallergy=$8 , wheatallergy=$9  where userid=$10', [req.body.eggsallergy, req.body.fishallergy, req.body.milkallergy, req.body.peanutsallergy, req.body.sesameallergy, req.body.shellfishallergy, req.body.soyallergy, req.body.treenutsallergy, req.body.wheatallergy , req.params.userid
+    ])
+    .then(function() {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: ' one user preference was Updated'
+        });
+    })
+    .catch(function(err) {
+      console.log(err)
+      return next(err);
+    });
+}
 // this function delete the tweeds which it's id was after url
 // function deletetweed(req, res, next) {
 //   let id = parseInt(req.params.id);
@@ -163,10 +183,11 @@ function addnewproduct(req, res, next) {
 
 //CRUD
 module.exports = {
-  //getuserpref: getuserpref, //read
-  adduserpref: adduserpref, //add
-  //updateuserpref:updateuserpref, //Edit
+  getuserpref  : getuserpref, //read
+  adduserpref  : adduserpref, //add
+  editpref     : editpref, //Edit
   addnewproduct: addnewproduct,   //add
+  addresult    : addresult, 
   //getproduct: getproduct,   //read
   //deleteproduct: deleteproduct    //DELETE
 };

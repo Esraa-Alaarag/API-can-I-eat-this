@@ -8,10 +8,11 @@ router.get('/', function(req, res, next) {
   res.render('api', { title: 'database' });
 });
 // adding the routs for the axios calls
-//router.get('/api/:userid', db.getuserpref);
+router.get('/allergies/:userid', db.getuserpref);
 router.post('/allergies', db.adduserpref);
 router.post('/products', db.addnewproduct);
-//router.put('/api/:userid', db.updateuserpref);
+router.post('/information', db.addresult);
+router.put('/allergies/:userid', db.editpref);
 
 //router.get('/api/:userid', db.getproduct);
 //router.delete('/api/:id', db.deleteproduct);
