@@ -12,7 +12,7 @@ router.get('/allergies/:userid', db.getuserpref);
 router.post('/allergies', db.adduserpref);
 router.get('/allergies', db.allusers);
 router.put('/allergies/:userid', db.editpref);
-router.patch('/allergies/:userid', db.addoredit);
+router.patch('/allergies', db.addoredit);
 router.post('/products', db.addnewproduct);
 router.post('/information', db.addresult);
 

@@ -99,17 +99,19 @@ function adduserpref(req, res, next) {
 
 function addoredit(req, res, next) {
   console.log(req);
-  db.none('update allergies set eggsallergy=$1, fishallergy=$2, milkallergy=$3, peanutsallergy=$4, sesameallergy=$5 ,shellfishallergy=$6 , soyallergy=$7,  treenutsallergy=$8 , wheatallergy=$9  where userid=$10', [req.body.eggsallergy, req.body.fishallergy, req.body.milkallergy, req.body.peanutsallergy, req.body.sesameallergy, req.body.shellfishallergy, req.body.soyallergy, req.body.treenutsallergy, req.body.wheatallergy , req.params.userid
-    ])
+  console.log('req.body ===>', req.body)
+   db.none('insert into allergies (userid ,eggsallergy , fishallergy , milkallergy, peanutsallergy, sesameallergy, shellfishallergy , soyallergy , treenutsallergy,wheatallergy)' +
+      'values(${userid} , ${eggsallergy} , ${fishallergy} , ${milkallergy},${peanutsallergy},${sesameallergy} ,${shellfishallergy},${soyallergy},${treenutsallergy},${wheatallergy}  )',
+      req.body)
     .then(function() {
       res.status(200)
         .json({
           status: 'success',
-          message: ' one user preference was Updated'
+          message: 'One user preference was added'
         });
     })
     .catch(function(err) {
-      console.log(err)
+      console.log("This user already exist in the database");
       return next(err);
     });
 }
