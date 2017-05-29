@@ -105,7 +105,7 @@ function addproduct(req, res, next) {
 // get all the products scanned by a certain user
 function userhistory(req, res, next) {
   let userid = parseInt(req.params.userid);
-  db.any('SELECT information.id , information.product , information.result information.img FROM information where userid = $1', userid)
+  db.any('SELECT information.id , information.product , information.result , information.img FROM information where userid = $1', userid)
     .then(function(data) {
       console.log('DATA:', data);
       res.status(200)
