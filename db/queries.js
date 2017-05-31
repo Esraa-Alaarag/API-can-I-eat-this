@@ -81,8 +81,8 @@ function allusers(req, res, next) {
 function addproduct(req, res, next) {
   console.log(req);
   console.log('req.body ===>', req.body)
-   db.none('insert into information (userid ,barcode, product, eggs , fish, milk, peanuts, sesame, shellfish , soy , treenuts, wheat , img , result)' +
-      'values(${userid} ,${barcode}, ${product}, ${eggs} , ${fish} , ${milk},${peanuts},${sesame} ,${shellfish},${soy},${treenuts},${wheat},${img},${result}  )',
+   db.none('insert into information (userid ,barcode, product, eggs , fish, milk, peanuts, sesame, shellfish , soy , treenuts, wheat , img )' +
+      'values(${userid} ,${barcode}, ${product}, ${eggs} , ${fish} , ${milk},${peanuts},${sesame} ,${shellfish},${soy},${treenuts},${wheat},${img} )',
       req.body)
     .then(function() {
       res.status(200)
@@ -105,7 +105,7 @@ function addproduct(req, res, next) {
 // get all the products scanned by a certain user
 function userhistory(req, res, next) {
   let userid = parseInt(req.params.userid);
-  db.any('SELECT information.id , information.product , information.result , information.img FROM information where userid = $1', userid)
+  db.any('SELECT * FROM information where userid = $1', userid)
     .then(function(data) {
       console.log('DATA:', data);
       res.status(200)

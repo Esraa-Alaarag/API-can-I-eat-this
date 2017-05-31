@@ -32,12 +32,10 @@ CREATE TABLE information (
     soy BOOLEAN NOT NULL,
     treenuts BOOLEAN NOT NULL,
     wheat BOOLEAN NOT NULL,
-    img VARCHAR,
-    result BOOLEAN NOT NULL
+    img VARCHAR
 );
 
 
 INSERT INTO allergies(userid,eggsallergy,fishallergy,milkallergy, peanutsallergy,sesameallergy,shellfishallergy,soyallergy,treenutsallergy,wheatallergy) VALUES
-
-
-
+(123456, FALSE ,TRUE, FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE),
+(987987, FALSE ,FALSE, FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE);
